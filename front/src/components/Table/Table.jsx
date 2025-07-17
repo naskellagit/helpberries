@@ -3,7 +3,15 @@ import TableRow from "../TableRow/TableRow";
 import DeleteBtn from "../ui/DeleteBtn/DeleteBtn";
 import styles from "./styles.module.css";
 
-function Table({ items, choosedTableData, isAllChecked, choosedTableDataIds, deleteItems, scanHistryMode }) {
+function Table({ 
+  items,
+  choosedTableData,
+  isAllChecked,
+  choosedTableDataIds,
+  deleteItems,
+  scanHistryMode,
+  isLoading 
+}) {
   const handleChange = (value) => {
     choosedTableData(value)
   }
@@ -42,7 +50,7 @@ function Table({ items, choosedTableData, isAllChecked, choosedTableDataIds, del
         </tr>
       </thead>
       <tbody>
-        {items.map((item) => (
+        {!isLoading ? items.map((item) => (
           <TableRow
             key={item.id}
             item={item}
@@ -51,7 +59,7 @@ function Table({ items, choosedTableData, isAllChecked, choosedTableDataIds, del
             deleteItems={deleteItems}
             scanHistryMode={scanHistryMode}
           />
-        ))}
+        )) : <tr><td><div className={styles.spinner}></div></td></tr>}
       </tbody>
     </table>
   );

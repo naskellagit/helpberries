@@ -22,7 +22,8 @@ function App() {
   const [scanCode, setScanCode] = useState('')
   const [isFocusScan, setIsFocusScan] = useState(true)
   const [boxes, setBoxes] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingForDelete, setIsLoadingForDelete] = useState(false)
+  const [isLoadingForGetData, setIsLoadingForGetData] = useState(false)
   const [page, setPage] = useState(1)
 
   const limit = 12
@@ -30,12 +31,14 @@ function App() {
   const scanInput = useRef(null)
 
   async function getData(){
+    setIsLoadingForGetData(true)
     const res = await getDataFromNet(scanHistryMode)
     const data = res.data || []
     setTableData(data)
     if(!data.length) return
     setSelectedBox(data[0].boxNumber)
     setBoxes(Array.from(new Set(data.map(item => item.boxNumber))).reverse())
+    setIsLoadingForGetData(false)
   }
 
   useEffect(() => {
@@ -55,6 +58,8 @@ function App() {
   }, [selectedBox])
 
   useEffect(() => {
+    setTableData([])
+    setBoxes([])
     getData(scanHistryMode)
     if(scanHistryMode === 'Сканирование'){
       scanInput.current.focus()
@@ -128,18 +133,17 @@ function App() {
   }
 
   const deleteTableRow = async(id) => {
+    setIsLoadingForDelete(true)
     if(id){
       let newTableData = [...tableData]
       newTableData = newTableData.filter(dataItem => dataItem.id !== id)
       setTableData(newTableData)
-      setIsLoading(true)
       const findedElem = newTableData.find(el => el.id)
       if(findedElem) {
         findedElem.deleted = 'TRUE'
         await putItem(findedElem)
       }
-      // await deleteItem(id)
-      setIsLoading(false)
+      setIsLoadingForDelete(false)
       return
     }
     if(choosedTableDataIds.length){
@@ -147,23 +151,21 @@ function App() {
       newTableData = newTableData.filter(dataItem => !choosedTableDataIds.some(el => el === dataItem.id))
       setTableData(newTableData)
       setChoosedTableDataIds([])
-      setIsLoading(true)
       for(const id of choosedTableDataIds){
         const findedElem = tableData.find(el => el.id === id)
         if(findedElem){
           findedElem.deleted = 'TRUE'
           await putItem(findedElem)
         }
-        // await deleteItem(id)
       }
-      setIsLoading(false)
       setPage(1)
     }
+    setIsLoadingForDelete(false)
   }
 
   return (
     <div className={styles.appWrapper}>
-      {isLoading && <InfoWindow title={'Удаление...'}/>}
+      {isLoadingForDelete && <InfoWindow title={'Удаление...'}/>}
       <Sidebar
         boxes={boxes}
         selectedBox={selectedBox}
@@ -188,6 +190,7 @@ function App() {
           choosedTableDataIds={choosedTableDataIds}
           deleteItems={deleteTableRow}
           scanHistryMode={scanHistryMode}
+          isLoading={isLoadingForGetData}
         />
         </div>
         <div className={styles.footer}>

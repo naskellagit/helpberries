@@ -1,8 +1,10 @@
 .wrapper{
-  padding: 19px 20px;
+  padding: 0px 20px;
+  height: 66px;
   border-radius: 8px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
   font-size: 22px;
 }
@@ -18,7 +20,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 39px;
 }
 .active{
   background-color: #471771;
@@ -28,7 +29,7 @@
   color: #ffffff67
 }
 
-@media (max-width: 1840px) {
+@media (max-width: 1855px) {
   .wrapper{
     padding: 14px 15px;
     gap: 7px;
@@ -39,14 +40,20 @@
   }
 }
 
-@media (max-width: 1440px) {
-  .button{
-    margin-left: 15px
+@media (max-width: 1560px) {
+  .wrapper{
+    padding: 14px 7px;
+    gap: 5px;
+    font-size: 14px;
   }
 }
 
-@media (max-width: 1275px) {
+@media (max-width: 1440px) {
+  .wrapper{
+    gap: 5px;
+  }
   .button{
-    margin-left: 5px
+    width: 34px;
+    height: 28px;
   }
 }

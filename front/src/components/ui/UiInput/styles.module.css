@@ -1,10 +1,10 @@
 .inputContainer {
-  padding: 8px 30px;
+  padding: 0px 30px;
   border: none;
   border-radius: 8px;
   border: 1px solid #BFBFBF;
   outline: none;
-  height: 66px;
+  height: 66px !important;
   font-size: 14px;
 }
 
