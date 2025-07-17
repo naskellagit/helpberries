@@ -44,16 +44,21 @@ function Sidebar({ boxes, selectedBox, setBoxNumber, setSelectedBox, boxNumber, 
               className={`${styles.item} ${selectedBox === box ? styles.active : ""}`}
               onClick={() => setSelectedBox(box)}
             >
-              <BoxItem boxNumber={box} boxCode={generateBoxBarcode(box)} selectedBox={selectedBox}/>
+              <BoxItem
+                boxNumber={box}
+                boxCode={generateBoxBarcode(box)}
+                selectedBox={selectedBox}
+                scanHistryMode={scanHistryMode}
+              />
             </li>
           ))}
         </ul>
       </div>
-      <UiButton 
+      {scanHistryMode === 'Сканирование' && <UiButton 
         title={'Печать'}
         callback={() => window.print()}
         isPrint
-      />
+      />}
     </div>
   )
 }

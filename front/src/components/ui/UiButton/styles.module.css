@@ -4,14 +4,16 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 600;
   color: #fff;
   background-color: #BD20A3;
-  max-width: 100%;
   gap: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: 330px;
+  width: 100%;
 }
 .scan{
   border-top-right-radius: 0;
@@ -20,6 +22,8 @@
   color: #000;
   border: 1px solid #BFBFBF;
   border-right: none;
+  font-size: 18px;
+  font-weight: 500;
 }
 .history{
   border-bottom-left-radius: 0;
@@ -28,6 +32,8 @@
   border: 1px solid #BFBFBF;
   color: #000;
   border-left: none;
+  font-size: 18px;
+  font-weight: 500;
 }
  .scan.active, .history.active {
   background-color: #471771;

@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles.module.css'
 
-const BoxItem = ({boxNumber, boxCode = '', selectedBox}) => {
+const BoxItem = ({boxNumber, boxCode = '', selectedBox, scanHistryMode}) => {
   return(
     <div className={`${styles.wrapper} ${boxNumber === selectedBox ? styles.active : null}`}>
       <div style={{display: 'flex', alignItems: 'center', gap: 10}}>
@@ -9,12 +9,12 @@ const BoxItem = ({boxNumber, boxCode = '', selectedBox}) => {
       <span>Короб {boxNumber}</span>
       <span className={styles.boxCode}>{boxCode}</span>
       </div>
-      <div 
+      {scanHistryMode === 'Сканирование' && <div 
         className={styles.button}
         onClick={() => window.print()}
       >
         <img src='/boxPrint.svg' alt="icon" width={23} height={23} />
-      </div>
+      </div>}
     </div>
   )
 }
