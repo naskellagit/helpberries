@@ -54,7 +54,8 @@ function Sidebar({ boxes, selectedBox, setBoxNumber, setSelectedBox, boxNumber, 
           ))}
         </ul>
       </div>
-      {scanHistryMode === 'Сканирование' && <UiButton 
+      {scanHistryMode === 'Сканирование' && 
+      <UiButton 
         title={'Печать'}
         callback={() => window.print()}
         isPrint
