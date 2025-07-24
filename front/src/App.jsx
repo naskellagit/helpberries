@@ -8,9 +8,9 @@ import addedData from "./services/addedData"
 import styles from "./App.module.css"
 import generateBoxBarcode from "./services/generateBoxBarcode"
 import getDataFromNet from "./services/getDataFromNet"
-import deleteItem from "./services/deleteItem"
 import InfoWindow from "./components/InfoWindow/InfoWindow"
 import putItem from "./services/putItem"
+import deleteItem from './services/deleteItem'
 
 function App() {
   const [boxNumber, setBoxNumber] = useState('')
@@ -35,7 +35,12 @@ function App() {
     const res = await getDataFromNet(scanHistryMode)
     const data = res.data || []
     setTableData(data)
-    if(!data.length) return
+    if(!data.length){
+      setBoxes([])
+      setBoxNumberAndSelectedBox(null)
+      setIsLoadingForGetData(false)
+      return
+    }
     setSelectedBox(data[0].boxNumber)
     setBoxes(Array.from(new Set(data.map(item => item.boxNumber))).reverse())
     setIsLoadingForGetData(false)
@@ -134,6 +139,30 @@ function App() {
 
   const deleteTableRow = async(id) => {
     setIsLoadingForDelete(true)
+    if(Array.isArray(id)){
+      let newTableData = [...tableData]
+      newTableData = newTableData.filter(dataItem => !id.some(el => el === dataItem.id))
+      setTableData(newTableData)
+      setChoosedTableDataIds([])
+      const promises = []
+      for(const _id of id){
+        const findedElem = tableData.find(el => el.id === _id)
+        if(findedElem){
+          if(scanHistryMode === 'Сканирование'){
+            findedElem.deleted = 'TRUE'
+            promises.push(putItem(findedElem))
+          }
+          else{
+            await deleteItem(_id)
+          }
+        }
+      }
+      scanHistryMode === 'Сканирование' && await Promise.all(promises)
+      setPage(1)
+      await getData(scanHistryMode)
+      setIsLoadingForDelete(false)
+      return
+    }
     if(id){
       let newTableData = [...tableData]
       newTableData = newTableData.filter(dataItem => dataItem.id !== id)
@@ -151,14 +180,17 @@ function App() {
       newTableData = newTableData.filter(dataItem => !choosedTableDataIds.some(el => el === dataItem.id))
       setTableData(newTableData)
       setChoosedTableDataIds([])
+      const promises = []
       for(const id of choosedTableDataIds){
         const findedElem = tableData.find(el => el.id === id)
         if(findedElem){
           findedElem.deleted = 'TRUE'
-          await putItem(findedElem)
+          promises.push(putItem(findedElem))
         }
       }
+      await Promise.all(promises)
       setPage(1)
+      getData(scanHistryMode)
     }
     setIsLoadingForDelete(false)
   }
@@ -168,6 +200,8 @@ function App() {
       {isLoadingForDelete && <InfoWindow title={'Удаление...'}/>}
       <Sidebar
         boxes={boxes}
+        tableData={tableData}
+        deleteItems={deleteTableRow}
         selectedBox={selectedBox}
         setSelectedBox={setSelectedBox}
         setBoxNumber={setBoxNumberAndSelectedBox}

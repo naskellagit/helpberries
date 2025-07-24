@@ -5,11 +5,21 @@ import UiButton from "../ui/UiButton/UiBtton"
 import UiInput from '../ui/UiInput/UiInput'
 import styles from "./styles.module.css"
 
-function Sidebar({ boxes, selectedBox, setBoxNumber, setSelectedBox, boxNumber, scanHistryMode }) {
+function Sidebar({
+  boxes,
+  tableData,
+  deleteItems,
+  selectedBox,
+  setBoxNumber,
+  setSelectedBox,
+  boxNumber,
+  scanHistryMode 
+}) {
   const [boxNumberLocal, setBoxNumberLocal] = useState(boxNumber)
 
   const setBoxNumberHandler = () => {
     setBoxNumber(boxNumberLocal)
+    setBoxNumberLocal('')
   }
 
   return (
@@ -46,6 +56,8 @@ function Sidebar({ boxes, selectedBox, setBoxNumber, setSelectedBox, boxNumber, 
             >
               <BoxItem
                 boxNumber={box}
+                deleteItems={deleteItems}
+                tableData={tableData}
                 boxCode={generateBoxBarcode(box)}
                 selectedBox={selectedBox}
                 scanHistryMode={scanHistryMode}
