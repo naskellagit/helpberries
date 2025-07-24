@@ -25,6 +25,7 @@ function App() {
   const [isLoadingForDelete, setIsLoadingForDelete] = useState(false)
   const [isLoadingForGetData, setIsLoadingForGetData] = useState(false)
   const [page, setPage] = useState(1)
+  const [isMultiPrint, setIsMultiPrint] = useState(null)
 
   const limit = 12
 
@@ -84,6 +85,13 @@ function App() {
     } 
   }, [boxNumber])
 
+  useEffect(() => {
+    if(tableData.length && isMultiPrint !== null){
+     window.print()
+     setIsMultiPrint(null)
+    }
+  }, [isMultiPrint])
+
   const filteredItemsForSearch = searchQuery ? tableData.filter(item => item.productCode.toLowerCase() == searchQuery.toLowerCase()) : tableData
 
   const setBoxNumberAndSelectedBox = (value) => {
@@ -97,11 +105,11 @@ function App() {
   const filteredItems = boxItems.slice((page - 1) * limit, page * limit)
 
   const scanHandler = (e) => {
-    setScanCode(e.target.value)
+    if(boxes.length) setScanCode(e.target.value)
   }
 
   const handleKeyDown = async(e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && boxes.length) {
       setPage(1)
       setTableData(await addedData([...tableData], selectedBox, scanCode))
       setScanCode('')
@@ -207,6 +215,7 @@ function App() {
         setBoxNumber={setBoxNumberAndSelectedBox}
         boxNumber={boxNumber}
         scanHistryMode={scanHistryMode}
+        setIsMultiPrint={setIsMultiPrint}
       />
       <div className={styles.contentArea}>
         <SearchComponent
@@ -246,7 +255,13 @@ function App() {
           style={{opacity: 0, position: 'absolute'}}
         />
         <div className={styles.printArea}>
-          <Barcode value={generateBoxBarcode(selectedBox)} format="CODE128" width={2} height={100} displayValue />
+          {!isMultiPrint ?
+            <Barcode value={generateBoxBarcode(selectedBox)} format="CODE128" width={2} height={100} displayValue/>
+            :
+            boxes.map(el => (
+              <Barcode key={el} value={generateBoxBarcode(el)} format="CODE128" width={2} height={100} displayValue/>
+            ))
+          }
         </div>
       </div>
     </div>

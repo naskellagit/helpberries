@@ -2,7 +2,6 @@ import styles from './styles.module.css'
 
 const UiButton = ({
   title,
-  isPrint,
   callback,
   isActive,
   isAddBox
@@ -13,7 +12,6 @@ const UiButton = ({
       onClick={callback}
       id={title}
     >
-      {isPrint && <img src='/boxPrint.svg' alt="icon" width={23} height={23} />}
       {title}
     </button>
   )

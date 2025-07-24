@@ -32,7 +32,7 @@
   }
   .printArea, .printArea * {
     visibility: visible;
-    display: block !important;
+    display: flex !important;
   }
   .printArea {
     position: absolute;

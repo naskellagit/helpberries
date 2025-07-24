@@ -13,13 +13,18 @@ function Sidebar({
   setBoxNumber,
   setSelectedBox,
   boxNumber,
-  scanHistryMode 
+  scanHistryMode,
+  setIsMultiPrint
 }) {
   const [boxNumberLocal, setBoxNumberLocal] = useState(boxNumber)
 
   const setBoxNumberHandler = () => {
     setBoxNumber(boxNumberLocal)
     setBoxNumberLocal('')
+  }
+
+  const printHandler = () => {
+    setIsMultiPrint(true)
   }
 
   return (
@@ -33,18 +38,18 @@ function Sidebar({
       </div>
       {scanHistryMode === 'Сканирование' && (
         <div className={styles.addBlock}>
-        <UiInput
-          isInputType={'boxNumber'}
-          value={boxNumberLocal}
-          callback={setBoxNumberLocal}
-        />
-        <UiButton
-          title={'+ Добавить короб'}
-          scanHistryMode={''}
-          callback={setBoxNumberHandler}
-          isAddBox={true}
-        />
-      </div>
+          <UiInput
+            isInputType={'boxNumber'}
+            value={boxNumberLocal}
+            callback={setBoxNumberLocal}
+          />
+          <UiButton
+            title={'+ Добавить короб'}
+            scanHistryMode={''}
+            callback={setBoxNumberHandler}
+            isAddBox={true}
+          />
+        </div>
       )}
       <div className={styles.itemsWrapper}>
         <ul className={styles.list}>
@@ -61,17 +66,26 @@ function Sidebar({
                 boxCode={generateBoxBarcode(box)}
                 selectedBox={selectedBox}
                 scanHistryMode={scanHistryMode}
+                setIsMultiPrint={setIsMultiPrint}
               />
             </li>
           ))}
         </ul>
       </div>
-      {scanHistryMode === 'Сканирование' && 
-      <UiButton 
-        title={'Печать'}
-        callback={() => window.print()}
-        isPrint
-      />}
+      {scanHistryMode === 'Сканирование' &&
+        <div className={styles.footer}>
+          <div className={styles.footerDelete}>
+            <img src='/delete-footer.svg' alt="icon" width={20} height={21}/>
+          </div>
+          <div className={styles.footerPrint} onClick={printHandler}>
+            <img src='/boxPrint.svg' alt="icon" width={20} height={21}/>
+          </div>
+          <UiButton 
+            title={'Записать'}
+            callback={() => {}}
+          />
+        </div>
+      }
     </div>
   )
 }
