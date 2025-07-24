@@ -27,6 +27,11 @@ function Sidebar({
     setIsMultiPrint(true)
   }
 
+  const deleteHandler = async() => {
+    const deletedIds = tableData.map(el => el.id)
+    await deleteItems(deletedIds)
+  }
+
   return (
     <div className={styles.sidebar}>
       <div className={styles.logo}>
@@ -75,7 +80,7 @@ function Sidebar({
       {scanHistryMode === 'Сканирование' &&
         <div className={styles.footer}>
           <div className={styles.footerDelete}>
-            <img src='/delete-footer.svg' alt="icon" width={20} height={21}/>
+            <img src='/delete-footer.svg' alt="icon" width={20} height={21} onClick={deleteHandler}/>
           </div>
           <div className={styles.footerPrint} onClick={printHandler}>
             <img src='/boxPrint.svg' alt="icon" width={20} height={21}/>
