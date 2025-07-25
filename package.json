@@ -9,7 +9,7 @@
   "scripts": {
     "front-dev": "npm run dev --prefix front",
     "front-install-packages": "npm i --prefix front",
-    "front_build": "npm run build --prefix front",
+    "front-build": "npm run build --prefix front",
     "back-dev": "nodemon server.js",
     "start": "node server.js"
   }
