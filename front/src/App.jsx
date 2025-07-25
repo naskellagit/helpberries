@@ -109,7 +109,7 @@ function App() {
   }
 
   const handleKeyDown = async(e) => {
-    if (e.key === "Enter" && boxes.length) {
+    if (e.key === "Enter" && boxes.length && scanCode) {
       setPage(1)
       setTableData(await addedData([...tableData], selectedBox, scanCode))
       setScanCode('')

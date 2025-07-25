@@ -1,5 +1,6 @@
 import React, {useState} from "react"
 import generateBoxBarcode from "../../services/generateBoxBarcode"
+import putDataInMoiSklad from "../../services/putDataInMoiSklad"
 import BoxItem from "../BoxItem/BoxItem"
 import UiButton from "../ui/UiButton/UiBtton"
 import UiInput from '../ui/UiInput/UiInput'
@@ -87,7 +88,7 @@ function Sidebar({
           </div>
           <UiButton 
             title={'Записать'}
-            callback={() => {}}
+            callback={putDataInMoiSklad}
           />
         </div>
       }

@@ -1,6 +1,6 @@
 import API_URL from "../../config"
 const putItem = async(data) => {
-  const res = await fetch(`${API_URL}/row/${data.id}`, {
+  await fetch(`${API_URL}/row/${data.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'

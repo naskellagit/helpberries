@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const { google } = require('googleapis')
+const getDataFromGoogleSheets = require('./services/getDataFromGoogleSheets')
+const writeToMoiSklad = require('./services/writeToMoiSklad')
 
 const spreadsheetId = '1oSZDceUo1RMIAtzRRgUVVeSG6O9i-Fp47oY8t2I5nZo'
 const sheetName = 'Sheet1'
@@ -11,27 +13,9 @@ const auth = new google.auth.GoogleAuth({
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 })
 
-router.get('/rows', async (req, res) => {
-  const client = await auth.getClient();
-  const sheets = google.sheets({ version: 'v4', auth: client });
-
-  const response = await sheets.spreadsheets.values.get({
-    spreadsheetId,
-    range: `${sheetName}!A2:G`,
-  });
-
-  let rows = response.data.values || [];
-
-  // Преобразовать в объекты
-  let data = rows.map(r => ({
-    id: r[0],
-    date: r[1],
-    boxCode: r[2],
-    productCode: r[3],
-    quantity: r[4],
-    boxNumber: r[5],
-    deleted: r[6]
-  }));
+router.get('/rows', async(req, res) => {
+  const client = await auth.getClient()
+  let data = await getDataFromGoogleSheets(client, google, spreadsheetId, sheetName)
 
   // ----------------
   // ✅ Фильтрация
@@ -207,6 +191,13 @@ router.delete('/row/:id', async (req, res) => {
   });
 
   res.send({ message: 'Row deleted' });
+})
+
+router.post('/moiSklad', async(req, res) => {
+  const client = await auth.getClient()
+  const data = await getDataFromGoogleSheets(client, google, spreadsheetId, sheetName)
+  await writeToMoiSklad(data)
+  res.send(200)
 })
 
 module.exports = router;

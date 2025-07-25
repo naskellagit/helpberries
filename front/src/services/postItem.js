@@ -1,6 +1,6 @@
 import API_URL from "../../config"
 const postItem = async(data) => {
-  const response = await fetch(`${API_URL}/row`, {
+  await fetch(`${API_URL}/row`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
