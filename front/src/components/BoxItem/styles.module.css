@@ -52,27 +52,28 @@
 
 @media (max-width: 1855px) {
   .wrapper{
-    padding: 14px 12px;
-    gap: 7px;
-    font-size: 16px;
+    padding: 14px 7px;
+    gap: 5px;
+    font-size: 12px;
   }
   .boxCode{
     font-size: 12px;
+  }
+  .rightPart{
+    gap: 7px;
   }
 }
 
 @media (max-width: 1560px) {
   .wrapper{
-    padding: 14px 7px;
     gap: 5px;
-    font-size: 14px;
+  }
+  .leftPart{
+    gap: 5px;
   }
 }
 
 @media (max-width: 1440px) {
-  .wrapper{
-    gap: 5px;
-  }
   .button{
     width: 34px;
     height: 28px;
