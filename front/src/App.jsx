@@ -254,15 +254,29 @@ function App() {
           onBlur={blurScanInputHandler}
           style={{opacity: 0, position: 'absolute'}}
         />
-        <div className={styles.printArea}>
-          {!isMultiPrint ?
-            <Barcode value={generateBoxBarcode(selectedBox)} format="CODE128" width={2} height={100} displayValue/>
-            :
+        {!isMultiPrint ? (
+          <div className="printArea">
+            <Barcode
+              value={generateBoxBarcode(selectedBox)}
+              format="CODE128"
+              width={2}
+              height={100}
+              displayValue
+            />
+          </div>
+          ) : (
             boxes.map(el => (
-              <Barcode key={el} value={generateBoxBarcode(el)} format="CODE128" width={2} height={100} displayValue/>
+              <div key={el} className="printArea">
+                <Barcode
+                  value={generateBoxBarcode(el)}
+                  format="CODE128"
+                  width={2}
+                  height={100}
+                  displayValue
+                />
+              </div>
             ))
-          }
-        </div>
+          )}
       </div>
     </div>
   )

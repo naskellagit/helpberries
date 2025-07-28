@@ -1,9 +1,9 @@
 import React, {useState} from "react"
 import generateBoxBarcode from "../../services/generateBoxBarcode"
-import putDataInMoiSklad from "../../services/putDataInMoiSklad"
 import BoxItem from "../BoxItem/BoxItem"
 import UiButton from "../ui/UiButton/UiBtton"
 import UiInput from '../ui/UiInput/UiInput'
+import ContragentsModal from "../ContragentsModal/ContragentsModal"
 import styles from "./styles.module.css"
 
 function Sidebar({
@@ -18,6 +18,7 @@ function Sidebar({
   setIsMultiPrint
 }) {
   const [boxNumberLocal, setBoxNumberLocal] = useState(boxNumber)
+  const [isContragentsModal, setIsContragentsModal] = useState(false)
 
   const setBoxNumberHandler = () => {
     setBoxNumber(boxNumberLocal)
@@ -88,10 +89,11 @@ function Sidebar({
           </div>
           <UiButton 
             title={'Записать'}
-            callback={putDataInMoiSklad}
+            callback={() => setIsContragentsModal(true)}
           />
         </div>
       }
+      {isContragentsModal && <ContragentsModal setIsContragentsModal={setIsContragentsModal}/>}
     </div>
   )
 }

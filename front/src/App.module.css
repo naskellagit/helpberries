@@ -20,26 +20,30 @@
   overflow: auto;
 }
 
-.printArea {
+:global(.printArea) {
   visibility: hidden;
   height: 0;
   overflow: hidden;
 }
 
 @media print {
-  body * {
+  :global(body *) {
     visibility: hidden;
   }
-  .printArea, .printArea * {
+
+  :global(.printArea),
+  :global(.printArea *) {
     visibility: visible;
     display: flex !important;
   }
-  .printArea {
-    position: absolute;
-    left: 0;
-    top: 0;
+  :global(.printArea) {
     width: 100%;
-    text-align: center;
-    height: auto;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    break-after: page;
   }
 }

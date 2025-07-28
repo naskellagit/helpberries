@@ -2,12 +2,14 @@ const express = require('express')
 const router = express.Router()
 const { google } = require('googleapis')
 const getDataFromGoogleSheets = require('./services/getDataFromGoogleSheets')
-const writeToMoiSklad = require('./services/writeToMoiSklad')
+const createDocumentInMoiSklad = require('./services/createDocumentInMoiSklad')
 
 const spreadsheetId = '1oSZDceUo1RMIAtzRRgUVVeSG6O9i-Fp47oY8t2I5nZo'
 const sheetName = 'Sheet1'
 
 const keys = require('./credentials.json')
+const getContragents = require('./services/getContragents')
+const findGoodByBarCode = require('./services/findGoodByBarCode')
 const auth = new google.auth.GoogleAuth({
   credentials: keys,
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
@@ -193,11 +195,34 @@ router.delete('/row/:id', async (req, res) => {
   res.send({ message: 'Row deleted' });
 })
 
+router.get('/contragents', async(req, res) => {
+  const conrtagents = await getContragents()
+  res.json(conrtagents)
+})
+
 router.post('/moiSklad', async(req, res) => {
   const client = await auth.getClient()
-  const data = await getDataFromGoogleSheets(client, google, spreadsheetId, sheetName)
-  await writeToMoiSklad(data)
-  res.send(200)
+  let data = await getDataFromGoogleSheets(client, google, spreadsheetId, sheetName)
+  data = data.filter(el => el.deleted === 'FALSE')
+  const resultData = []
+  data.forEach(item => {
+    const findedElem = resultData.find(el => el.productCode === item.productCode)
+    if(!findedElem) resultData.push({
+      productCode: item.productCode,
+      quantity: item.quantity
+    })
+    else{
+      findedElem.quantity = (+item.quantity + +findedElem.quantity).toString()
+    }
+  })
+  const promises = []
+  const findedGoods = []
+  resultData.forEach((item) => {
+    promises.push(findGoodByBarCode(item.productCode).then(res => findedGoods.push({...res, quantity: item.quantity})))
+  })
+  await Promise.all(promises)
+  const response = await createDocumentInMoiSklad(findedGoods, req.body.id)
+  return res.json(response.data.meta.uuidHref)
 })
 
 module.exports = router;
