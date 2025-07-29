@@ -1,5 +1,5 @@
 .wrapper{
-  padding: 0px 12px;
+  padding: 0px 16px;
   height: 66px;
   border-radius: 8px;
   display: flex;
@@ -52,7 +52,6 @@
 
 @media (max-width: 1855px) {
   .wrapper{
-    padding: 14px 7px;
     gap: 5px;
     font-size: 12px;
   }

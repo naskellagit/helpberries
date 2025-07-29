@@ -90,6 +90,7 @@ function Sidebar({
           <UiButton 
             title={'Записать'}
             callback={() => setIsContragentsModal(true)}
+            fontWeight={500}
           />
         </div>
       }
