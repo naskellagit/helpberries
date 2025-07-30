@@ -34,7 +34,7 @@ const createDocumentInMoiSklad = async(data, contrAgentId) => {
       }
     }))
   }
-  const res = await axios.post('https://api.moysklad.ru/api/remap/1.2/entity/customerorder', body, {
+  const res = await axios.post('https://api.moysklad.ru/api/remap/1.2/entity/demand', body, {
     headers: {
       Authorization: 'Bearer 4f1da1b045d1daedf41a5b8a99185127cae79f95',
       'Accept-Encoding': 'gzip',
