@@ -13,7 +13,7 @@ const findGoodByBarCode = async(barCode) => {
     return res.data.rows[0]
   }
   catch(err){
-    console.log('Ошибка при получении контрагентов', err.message)
+    console.log('Ошибка при нахождении товара', err.message)
   }
 }
 

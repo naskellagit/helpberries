@@ -3,6 +3,7 @@ const router = express.Router()
 const { google } = require('googleapis')
 const getDataFromGoogleSheets = require('./services/getDataFromGoogleSheets')
 const createDocumentInMoiSklad = require('./services/createDocumentInMoiSklad')
+const contragentsFilter = require('./services/contragentsFilter')
 
 const spreadsheetId = '1oSZDceUo1RMIAtzRRgUVVeSG6O9i-Fp47oY8t2I5nZo'
 const sheetName = 'Sheet1'
@@ -197,7 +198,9 @@ router.delete('/row/:id', async (req, res) => {
 
 router.get('/contragents', async(req, res) => {
   const conrtagents = await getContragents()
-  res.json(conrtagents)
+  // Фильтруем контрагентов только по OOO и ИП
+  const filteredContragents = contragentsFilter(conrtagents)
+  res.json(filteredContragents)
 })
 
 router.post('/moiSklad', async(req, res) => {
@@ -218,11 +221,21 @@ router.post('/moiSklad', async(req, res) => {
   const promises = []
   const findedGoods = []
   resultData.forEach((item) => {
-    promises.push(findGoodByBarCode(item.productCode).then(res => findedGoods.push({...res, quantity: item.quantity})))
+    promises.push(findGoodByBarCode(item.productCode).then(res => {
+      if(res) findedGoods.push({...res, quantity: item.quantity})
+    }))
+      
   })
   await Promise.all(promises)
-  const response = await createDocumentInMoiSklad(findedGoods, req.body.id)
-  return res.json(response.data.meta.uuidHref)
+  let response = null
+  try{
+    response = await createDocumentInMoiSklad(findedGoods, req.body.id)
+    response = response.data.meta.uuidHref
+  }
+  catch(err){
+    response = {error: err.response.data.errors[0].error}
+  }
+  return res.json(response)
 })
 
 module.exports = router;

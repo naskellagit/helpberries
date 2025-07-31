@@ -173,13 +173,13 @@ function App() {
     }
     if(id){
       let newTableData = [...tableData]
-      newTableData = newTableData.filter(dataItem => dataItem.id !== id)
-      setTableData(newTableData)
-      const findedElem = newTableData.find(el => el.id)
+      const findedElem = newTableData.find(el => el.id === id)
       if(findedElem) {
         findedElem.deleted = 'TRUE'
         await putItem(findedElem)
       }
+      newTableData = newTableData.filter(dataItem => dataItem.id !== id)
+      setTableData(newTableData)
       setIsLoadingForDelete(false)
       return
     }

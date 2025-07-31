@@ -42,7 +42,11 @@ const ContragentsModal = ({setIsContragentsModal}) => {
           </>)} 
           {documentLink && !isLoading && (
             <>
-              <a target='blank' href={documentLink}>Перейти к просмотру документа</a>
+              {typeof(documentLink) !== 'object' && <a target='blank' href={documentLink}>Перейти к просмотру документа</a>}
+              {documentLink.error && <div>
+                <h6>Ошибка</h6>
+                <p>{documentLink.error}</p>
+                </div>}
               <button onClick={() => setIsContragentsModal(false)}>ОК</button>
             </>
           )}
