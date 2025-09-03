@@ -1,0 +1,56 @@
+.button {
+  padding: 0px 30px;
+  height: 66px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  background-color: #BD20A3;
+  gap: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 268px;
+  width: 100%;
+}
+.scan{
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #BFBFBF;
+  border-right: none;
+  font-size: 18px;
+  font-weight: 500;
+}
+.history{
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  background-color: #fff;
+  border: 1px solid #BFBFBF;
+  color: #000;
+  border-left: none;
+  font-size: 18px;
+  font-weight: 500;
+}
+ .scan.active, .history.active {
+  background-color: #471771;
+  color: #fff;
+  border: none;
+}
+
+@media (max-width: 1840px) {
+  .button {
+    height: 60px;
+  }
+  .addBox{
+    padding: 5px 8px;
+    font-size: 12px;
+    gap: 8px;
+  }
+}
+
+
+

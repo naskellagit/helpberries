@@ -1,0 +1,17 @@
+.container{
+  padding: 20px 37px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dateBlock{
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.scanIndicator{
+  display: inline-block;
+  width: 20px;
+  height:20px;
+}
