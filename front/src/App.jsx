@@ -244,13 +244,12 @@ function App() {
           />
         </div>
         <div className={styles.footer}>
-        <Actions 
-          pagesCount={Math.ceil(boxItems.length / limit)}
-          page={page}
-          setPage={setPage}
-        />
+          <Actions 
+            pagesCount={Math.ceil(boxItems.length / limit)}
+            page={page}
+            setPage={setPage}
+          />
         </div>
-       
         <input
           type='text'
           value={scanCode}

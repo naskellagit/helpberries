@@ -27,6 +27,20 @@ const createDocumentInMoiSklad = async(data, contrAgentId, boxesCodes) => {
         mediaType: 'application/json'
       }
     },
+    applicable: false,
+    attributes: [
+      {
+        meta: {
+          href: "https://api.moysklad.ru/api/remap/1.2/entity/demand/metadata/attributes/81af6db5-4728-11ee-0a80-035a000f00db",
+          type: "attributemetadata",
+          mediaType: "application/json"
+        },
+        id: "81af6db5-4728-11ee-0a80-035a000f00db",
+        name: "Количество коробов",
+        type: "long",
+        value: boxesCodes.length // здесь указываем нужное количество коробов
+      }
+    ],
     positions: data.map(elem => ({
       quantity: +elem.quantity,
       assortment: {
