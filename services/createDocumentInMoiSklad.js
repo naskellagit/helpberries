@@ -1,6 +1,10 @@
 const axios = require('axios')
+const fs = require('fs')
+const bwipjs = require('bwip-js')
+const { PDFDocument, rgb, StandardFonts } = require('pdf-lib')
 
-const createDocumentInMoiSklad = async(data, contrAgentId) => {
+const createDocumentInMoiSklad = async(data, contrAgentId, boxesCodes) => {
+  await generatePdfWithBarcodes(boxesCodes)
   const body = {
     organization: {
       meta: {
@@ -41,7 +45,76 @@ const createDocumentInMoiSklad = async(data, contrAgentId) => {
       'Content-Type': 'application/json'
     }
   })
+  const demand = res.data
+
+  const fileContent = fs.readFileSync('barcodes.pdf')
+  const base64File = fileContent.toString('base64')
+  const bodyFile = [
+    {
+      filename: 'barcodes.pdf',
+      content: base64File
+    }
+  ];
+  await axios.post(`https://api.moysklad.ru/api/remap/1.2/entity/demand/${demand.id}/files`,
+  bodyFile,
+    {
+      headers: {
+        Authorization: 'Bearer 4f1da1b045d1daedf41a5b8a99185127cae79f95',
+        'Accept-Encoding': 'gzip',
+        'Content-Type': 'application/json'
+      }
+    }
+  )
+
   return res
+}
+
+async function generatePdfWithBarcodes(codes) {
+  const pdfDoc = await PDFDocument.create();
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+    const pageWidth = 300;
+    const pageHeight = 400; // фиксируем высоту страницы
+    const margin = 20;
+    const spacing = 10; // расстояние между штрихкодами
+    const barcodeHeight = 20; // высота штрихкода
+    const scale = 1.5; // масштаб
+
+    let page = pdfDoc.addPage([pageWidth, pageHeight]);
+    let y = pageHeight - margin;
+
+    for (const code of codes) {
+        const pngBuffer = await bwipjs.toBuffer({
+            bcid: 'code128',
+            text: code,
+            scale: scale,
+            height: barcodeHeight,
+            includetext: true,
+            textxalign: 'center',
+        });
+
+        const pngImage = await pdfDoc.embedPng(pngBuffer);
+        const pngDims = pngImage.scale(1);
+
+        // Если не помещается на странице — создаем новую
+        if (y - pngDims.height < margin) {
+            page = pdfDoc.addPage([pageWidth, pageHeight]);
+            y = pageHeight - margin;
+        }
+
+        page.drawImage(pngImage, {
+            x: (pageWidth - pngDims.width) / 2,
+            y: y - pngDims.height,
+            width: pngDims.width,
+            height: pngDims.height,
+        });
+
+        y -= (pngDims.height + spacing);
+    }
+
+    const pdfBytes = await pdfDoc.save();
+    fs.writeFileSync('barcodes.pdf', pdfBytes);
+    console.log('PDF создан: barcodes.pdf');
 }
 
 module.exports = createDocumentInMoiSklad

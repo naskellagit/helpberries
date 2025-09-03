@@ -233,15 +233,15 @@ function App() {
           setScanHistoryMode={scanButtonHandler}
         />
         <div className={styles.content}>
-        <Table
-          items={filteredItems} 
-          choosedTableData={choosedTableData}
-          isAllChecked={choosedTableDataIds.length && choosedTableDataIds.length === tableData.filter(el => el.boxNumber === selectedBox).slice((page - 1) * limit, page * limit).length}
-          choosedTableDataIds={choosedTableDataIds}
-          deleteItems={deleteTableRow}
-          scanHistryMode={scanHistryMode}
-          isLoading={isLoadingForGetData}
-        />
+          <Table
+            items={filteredItems} 
+            choosedTableData={choosedTableData}
+            isAllChecked={choosedTableDataIds.length && choosedTableDataIds.length === tableData.filter(el => el.boxNumber === selectedBox).slice((page - 1) * limit, page * limit).length}
+            choosedTableDataIds={choosedTableDataIds}
+            deleteItems={deleteTableRow}
+            scanHistryMode={scanHistryMode}
+            isLoading={isLoadingForGetData}
+          />
         </div>
         <div className={styles.footer}>
         <Actions 

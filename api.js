@@ -207,6 +207,13 @@ router.post('/moiSklad', async(req, res) => {
   const client = await auth.getClient()
   let data = await getDataFromGoogleSheets(client, google, spreadsheetId, sheetName)
   data = data.filter(el => el.deleted === 'FALSE')
+  const boxesCodes = []
+  data.forEach(el => {
+    const findedElem = boxesCodes.find(item => item === el.boxCode)
+    if(!findedElem){
+      boxesCodes.push(el.boxCode)
+    }
+  })
   const resultData = []
   data.forEach(item => {
     const findedElem = resultData.find(el => el.productCode === item.productCode)
@@ -224,12 +231,11 @@ router.post('/moiSklad', async(req, res) => {
     promises.push(findGoodByBarCode(item.productCode).then(res => {
       if(res) findedGoods.push({...res, quantity: item.quantity})
     }))
-      
   })
   await Promise.all(promises)
   let response = null
   try{
-    response = await createDocumentInMoiSklad(findedGoods, req.body.id)
+    response = await createDocumentInMoiSklad(findedGoods, req.body.id, boxesCodes)
     response = response.data.meta.uuidHref
   }
   catch(err){
