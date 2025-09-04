@@ -1,4 +1,5 @@
 node_modules/
+public/
 front/node_modules/
 credentials.json
 barcodes.pdf

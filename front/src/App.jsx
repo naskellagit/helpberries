@@ -43,7 +43,7 @@ function App() {
       return
     }
     setSelectedBox(data[0].boxNumber)
-    setBoxes(Array.from(new Set(data.map(item => item.boxNumber))).sort((a, b) => a - b))
+    setBoxes(Array.from(new Set(data.map(item => item.boxNumber))).sort((a, b) => b - a))
     setIsLoadingForGetData(false)
   }
 
@@ -94,7 +94,7 @@ function App() {
   }, [isMultiPrint])
 
   const sortBoxes = (boxes, newBox) => {
-    const result = [...boxes].sort((a, b) => a - b)
+    const result = [...boxes].sort((a, b) => b - a)
     result.unshift(newBox)
     return result
   }
