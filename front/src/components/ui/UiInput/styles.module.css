@@ -1,0 +1,25 @@
+.inputContainer {
+  padding: 0px 30px;
+  border-radius: 8px;
+  border: 1px solid #BFBFBF;
+  outline: none;
+  height: 66px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.searchInput{
+  width: 300px;
+}
+.boxNumberInput{
+  width: 92px;
+  font-size: 18px;
+}
+
+@media (max-width: 1840px) {
+  .inputContainer {
+    padding: 6px 23px;
+    font-size: 13px;
+    height: 60px;
+  }
+}

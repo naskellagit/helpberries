@@ -1,0 +1,49 @@
+.actionsWrapper {
+  padding: 18px 20px 37px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.page{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  width: 60px;
+  height: 41px;
+  font-size: 24px;
+  border: none;
+  cursor: pointer;
+}
+.active{
+  background-color: #471771;
+  color: #fff;
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.button:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.arow{
+  cursor: pointer;
+}
+.rights{
+  font-size: 11px;
+  position: absolute;
+  right: 30px;
+  bottom: 6px;
+  font-weight: 400;
+}

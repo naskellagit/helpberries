@@ -1,0 +1,6 @@
+node_modules/
+front/node_modules/
+barcodes.pdf
+
+public/
+credentials.json
